@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vercel Security Lab</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Vercel Security Lab</h1>
+
+    <p>Authorized security testing laboratory.</p>
+
+    <div class="card">
+        <h2>User Lookup</h2>
+
+        <input id="userId" type="text" value="1001">
+        <button onclick="getUser()">Get User</button>
+
+        <pre id="result">Waiting...</pre>
+    </div>
+
+    <script>
+        async function getUser() {
+            const id = document.getElementById("userId").value;
+
+            const response = await fetch(`/api/user?id=${id}`);
+            const data = await response.json();
+
+            document.getElementById("result").textContent =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+
+</body>
+</html>
