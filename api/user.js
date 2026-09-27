@@ -21,12 +21,37 @@ const users = {
     }
 };
 
+const sessions = {
+    "session-user-1001": "1001",
+    "session-user-1002": "1002",
+    "session-admin-1003": "1003"
+};
+
 export default function handler(req, res) {
     const { id } = req.query;
+
+    const cookie = req.headers.cookie || "";
+    const match = cookie.match(/lab_session=([^;]+)/);
+    const sessionToken = match ? match[1] : null;
+
+    const currentUserId = sessions[sessionToken];
+
+    if (!currentUserId) {
+        return res.status(401).json({
+            error: "Authentication required"
+        });
+    }
 
     if (!id || !users[id]) {
         return res.status(404).json({
             error: "User not found"
+        });
+    }
+
+    // Authorization check
+    if (currentUserId !== id) {
+        return res.status(403).json({
+            error: "Forbidden"
         });
     }
 
